@@ -1,0 +1,15 @@
+﻿@model AgroLaboratorio.ViewModels.UsersVMS.RegistrationVM;
+
+<form asp-controller="Users" asp-action="Edit" method="post" id="formEditarUsuario">
+    <input asp-for="CodUsuario" hidden />
+
+    <div class="mb-3">
+        <div asp-validation-summary="All" class="text-danger"></div>
+    </div>
+    
+    @await Html.PartialAsync("_UsuarioForm", Model)
+
+    <div class="mb-3 d-grid">
+        <button type="submit" class="btn btn-success">Actualizar</button>
+    </div>
+</form>

@@ -1,0 +1,44 @@
+﻿@model AgroLaboratorio.ViewModels.SolsAnalisis.SolAnalisisVM
+
+<div id="tableDetailsError" class="msg-alert alert alert-danger">
+	<!-- Mensaje de Error -->
+</div>
+
+<!-- table -->
+<table class="table table-light" id="tablaDetalles">
+	<thead>
+		<tr class="text-center">
+			<th style="width: 5%">#</th>
+			<th>Nro. Linea</th>
+			<th>Elemento Químico</th>
+			<th>Valor de Garantía</th>
+			<th>Solubilidad</th>
+			<th>Acciones</th>
+		</tr>
+	</thead>
+	<tbody>
+		@for (int i = 0; i < Model.Detalles.Count; i++)
+		{
+			//Información para el índice
+			var viewData = 
+				new ViewDataDictionary(ViewData)
+				{
+					{"Index", i}, {"OrderNum", i + 1}
+				};
+
+			//Se asigna HtmlFieldPrefix para establecer el nombre adecuado
+			viewData.TemplateInfo.HtmlFieldPrefix = $"Detalles[{i}]";
+
+			//Renderizamos el partial para la fila de los detalles
+			await Html.RenderPartialAsync("_DetailRowTemplate", Model.Detalles[i], viewData);
+		
+		}
+	</tbody>
+</table>
+<!-- table -->
+
+<div class="table-footer-sticky">
+	<button class="btn btn-success" id="btnAddDetail">
+		<i class="bi bi-plus-lg"></i>
+	</button>
+</div>

@@ -1,0 +1,25 @@
+﻿@model AgroLaboratorio.ViewModels.UsersVMS.RegistrationVM;
+
+
+<div class="mb-3">
+    <label asp-for="Username" class="form-label">Username:</label>
+    <input asp-for="Username" class="form-control" />
+    <span asp-validation-for="Username"></span>
+</div>
+
+<div class="mb-3">
+    <label asp-for="Password" class="form-label">Password:</label>
+    <input asp-for="Password" class="form-control" />
+    <span asp-validation-for="Password"></span>
+</div>
+
+<div class="mb-3">
+    <label asp-for="ConfirmPassword" class="form-label">Confirmación:</label>
+    <input asp-for="ConfirmPassword" class="form-control" />
+    <span asp-validation-for="ConfirmPassword"></span>
+</div>
+
+<div class="mb-3">
+    <label asp-for="CodPerfil" class="form-label">Perfil de Usuario:</label>
+    <select asp-for="CodPerfil" asp-items="Model.Perfiles" class="form-select"></select>
+</div>

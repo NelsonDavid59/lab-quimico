@@ -1,0 +1,42 @@
+﻿@model AgroLaboratorio.ViewModels.SolsAnalisis.SolAnalisisListVM
+
+<div class="index-page">
+	<div class="index-page__actions">
+		<a class="btn btn-success" id="btnNewSolAnalisis" type="button"
+		asp-controller="SolsAnalisis" asp-action="Create">Nueva Solicitud</a>
+	</div>
+	<div class="index-page__list">
+		<table class="table table-hover" id="tablaSolicitudesAnalisis">
+			<thead>
+				<tr>
+					<th>Fecha</th>
+					<th>Descripción</th>
+					<th>Cliente</th>
+					<th>Estado</th>
+					<th>Creado Por</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var sol in Model.Solicitudes)
+				{
+					<tr>
+						<td>@sol.Fecha</td>
+						<td>@sol.Descripcion</td>
+						<td>@sol.NombreCliente</td>
+						<td>@sol.Estado</td>
+						<td>@sol.CodUserAlta</td>
+						<td>
+							<a asp-controller="SolsAnalisis" 
+							   asp-action="Edit" 
+							   asp-route-id="@sol.CodAnalisis"
+							   class="btn-edit">
+								Editar
+							</a>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+</div>

@@ -1,0 +1,168 @@
+﻿@model AgroLaboratorio.ViewModels.UsersVMS.UserListVM;
+
+<div class="users-index">
+	<div class="user-index__actions">
+		<button id="btnNewUsuario" class="btn btn-success" type="button">Nuevo Usuario</button>
+	</div>
+	<div class="users-index__list">
+		<table id="tablaUsuarios" class="table table-hover">
+			<thead>
+				<tr>
+					<th>Usuario</th>
+					<th>Creado Por</th>
+					<th>Fecha de Creación</th>
+					<th>Acciones</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach(var usuario in Model.Usuarios)
+				{
+					<tr>
+						<td>@usuario.Username</td>
+						<td>@usuario.CodUserAlta</td>
+						<td>@usuario.FechaAlta</td>
+						<td>
+							<a asp-controller="Users" asp-action="Show" asp-route-id="@usuario.CodUsuario">Ver</a>
+							<a asp-controller="Users" asp-action="Edit" asp-route-id="@usuario.CodUsuario" class="btn-edit">Editar</a>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<!-- MODAL PARA CREAR USUARIOS -->
+<div class="modal fade" id="modalCrearUsuario" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" 
+		aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="staticBackdropLabel">Nuevo Usuario</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				...
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- MODAL PARA EDITAR USUARIOS -->
+<div class="modal fade" id="modalEditarUsuario" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+	 aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="staticBackdropLabel">Editar Usuario</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				...
+			</div>
+		</div>
+	</div>
+</div>
+
+@section Scripts{
+	
+	<script>
+		const btnCrear = document.getElementById('btnNewUsuario');
+		const modalCrearElem = document.getElementById('modalCrearUsuario');
+		const modalEditElem = document.getElementById('modalEditarUsuario');
+		const tablaElem = document.getElementById('tablaUsuarios');
+
+		btnCrear.addEventListener('click', async () => {
+			const url = "/Users/RegisterForm";
+
+			//Se debe obtener el formulario via AJAX
+			await renderModalForm(modalCrearElem, url);
+
+			//Mostrar el modal
+			const modal = new bootstrap.Modal(modalCrearElem);
+			modal.show();
+		});
+
+		//Funcion para renderizar el formulario en el contenido del modal
+		const renderModalForm = async (modalElem, url) => {
+			const response = await fetch(url);
+
+			if(response.ok){
+				const html = await response.text();
+				modalElem.querySelector('.modal-body').innerHTML = html;
+			}
+		};
+
+		$(document).on("submit", "#formNuevoUsuario", async function(e) {
+			//Evitamos el submit
+			e.preventDefault();
+
+			let form = this;
+			let formData = new FormData(form);
+
+			let response = await fetch(form.action, {
+				method: "POST",
+				body: formData
+			});
+
+			const contentType = response.headers.get('content-type');
+
+			//Se verifica si el response es un json
+			if(contentType && contentType.includes('application/json')) {
+				const jsonResponse = await response.json();
+				
+				if(jsonResponse.success) {
+					window.location.href = "/Users/Index";
+				}
+			}
+			else {
+				modalCrearElem.querySelector('.modal-body').innerHTML = await response.text();
+			}
+		});
+
+		$(document).on("submit", "#formEditarUsuario", async function(e) {
+			//Evitamos el submit
+			e.preventDefault();
+
+			let form = this;
+			let formData = new FormData(form);
+
+			let response = await fetch(form.action, {
+				method: "POST",
+				body: formData
+			});
+
+			//Se verifica si el response es un json
+			const contentType = response.headers.get('content-type');
+
+			if(contentType && contentType.includes('application/json')) {
+				const jsonResponse = await response.json();
+
+				if(jsonResponse.success) {
+					window.location.href = "/Users/Index";
+				}
+			}
+			else {
+				modalEditElem.querySelector('.modal-body').innerHTML = await response.text();
+			}
+		});
+
+		tablaElem.addEventListener("click", async function(e){
+			//Verificamos que el evento provenga de un elemento editar
+			const link = e.target.closest(".btn-edit");
+			if(!link) return;
+			
+			e.preventDefault(); //Cancelamos la acción del link
+
+			const url = link.href;
+			
+			//Se carga el formulario en el modal
+			await renderModalForm(modalEditElem, url);
+
+			//Abrimos el modal para editar
+			const modal = new bootstrap.Modal(modalEditElem);
+			modal.show();
+		});
+
+	</script>
+}

@@ -1,0 +1,12 @@
+﻿@using AgroLaboratorio.Utils;
+@model AgroLaboratorio.ViewModels.Personas.PersonaVM;
+
+<form asp-controller="Personas" asp-action="Edit" method="post" id="formEditPersona">
+	<input asp-for="CodPersona" hidden />
+	
+	@await Html.PartialAsync(FormNames.FormPartial, Model)
+
+	<div class="mb-3 d-grid">
+		<button type="submit" class="btn btn-success">Actualizar</button>
+	</div>
+</form>

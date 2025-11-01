@@ -1,0 +1,86 @@
+﻿@model AgroLaboratorio.ViewModels.SolsAnalisis.SolAnalisisDetVM
+
+@{
+	var index = (ViewData["Index"] as int?)?.ToString() ?? "__index__";
+	var orderNum = (ViewData["OrderNum"] as int?)?.ToString() ?? "__orderNum__";
+	var lineNumber = Model?.NroLinea.GetValueOrDefault().ToString() ?? "";
+}
+
+<tr>
+	<td>
+		<!-- Campo especial que MVC usa para el binding -->
+		<input type="hidden" name="Detalles.Index" value="@index" />
+		<label class="table-numeration">
+			@orderNum
+		</label>
+	</td>
+	<td>
+		<input class="form-control"
+			   name="Detalles[@index].NroLinea"
+			   value="@lineNumber"
+			   readonly />
+	</td>
+	<td>
+		<div class="d-flex gap-2">
+			<div style="flex: 0 0 20%;">
+				<input class="form-control alphabet-upper"
+				name="Detalles[@index].CodElemento"
+				value="@(Model?.CodElemento ?? "")"
+				data-rsc-name="elem-quimico"
+				data-rsc-field="Codigo" />
+			</div>
+			<div class="flex-fill">
+				<input class="form-control"
+				name="Detalles[@index].DescElemento"
+				value="@(Model?.DescElemento ?? "")"
+				data-lov-target="elem-quimico"
+				data-rsc-field="Descripcion"
+				readonly />
+				@if (Model != null)
+				{
+					<span asp-validation-for="@Model.CodElemento" class="text-danger"></span>
+				}
+			</div>
+		</div>
+
+	</td>
+	<td>
+		<input class="form-control garantia-val"
+		name="Detalles[@index].GarantiaVal" 
+		value="@(Model?.GarantiaVal.ToString() ?? "")"/>
+		@if (Model != null)
+		{
+			<span asp-validation-for="@Model.GarantiaVal" class="text-danger"></span>
+		}
+	</td>
+	<td>
+		<div class="d-flex gap-2">
+			<div style="flex: 0 0 20%">
+				<input class="form-control solubl-val"
+				name="Detalles[@index].CodSoluble"
+				value="@(Model?.CodSoluble.ToString() ?? "")"
+				data-rsc-name="solubilidad"
+				data-rsc-field="Codigo" />
+			</div>
+			<div class="flex-fill">
+				<input class="form-control"
+				name="Detalles[@index].DescSolubilidad"
+				value="@(Model?.DescSolubilidad ?? "")"
+				data-lov-target="solubilidad"
+				data-rsc-field="Descripcion"
+				readonly />
+				@if (Model != null)
+				{
+					<span asp-validation-for="@Model.CodSoluble" class="text-danger"></span>
+				}
+			</div>
+		</div>
+	</td>
+	<td>
+		<button type="button" 
+			data-action="delete"
+			class="drop-detail-button btn btn-outline-secondary">
+			<i class="bi bi-trash3"></i>
+		</button>
+	</td>
+</tr>

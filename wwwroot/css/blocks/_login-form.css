@@ -1,0 +1,24 @@
+﻿
+/* MOVILES */
+.login-form {
+    height: 100%;
+    width: 100%;
+}
+
+
+/* TABLET */
+@media (min-width: 768px) {
+    .login-form {
+
+    }
+}
+
+
+/* DESKTOP */
+@media (min-width: 992px) {
+    .login-form {
+        width: 30vw;
+    }
+}
+
+

@@ -1,0 +1,17 @@
+﻿@using AgroLaboratorio.Utils;
+
+@model AgroLaboratorio.ViewModels.ElemQuimicos.ElemQuimicoVM;
+
+<form asp-controller="ElemQuimicos" asp-action="Edit" method="post" id="formEditElemQuimico">
+	<div class="mb-3">
+		<label asp-for="CodElemento" class="form-label">Sigla:</label>
+		<input asp-for="CodElemento" class="form-control upper-case-input" disabled />
+		<input asp-for="CodElemento" hidden />
+	</div>
+	
+	@await Html.PartialAsync("_Form", Model)
+
+	<div class="mb-3 d-grid">
+		<button type="submit" class="btn btn-success">Actualizar</button>
+	</div>
+</form>

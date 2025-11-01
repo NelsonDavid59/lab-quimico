@@ -1,0 +1,73 @@
+﻿@using AgroLaboratorio.Extensions;
+@model AgroLaboratorio.ViewModels.SolsAnalisis.SolAnalisisVM
+
+
+<div class="mb-3 d-flex justify-content-between">
+	<div class="col-md-2">
+		<label asp-for="Fecha" class="form-label">Fecha de Solicitud:</label>
+		<div class="input-group">
+			<span class="input-group-text"><i class="bi bi-calendar"></i></span>
+			<input asp-for="Fecha" class="form-control text-center"
+					type="text"
+					value="@Model.Fecha.ToShortPY()"
+					readonly />
+		</div>
+	</div>
+	<div class="col-md-2">
+		<label asp-for="Estado" class="form-label">Estado:</label>
+		<div class="input-group">
+			<span class="input-group-text"><i class="bi bi-info-lg"></i></span>
+			<input asp-for="Estado" class="form-control text-center"
+				   type="text"
+				   value="@Model.Estado"
+				   readonly />
+		</div>
+	</div>
+</div>
+
+<div class="mb-3">
+	<div class="input-group">
+		<div class="col-md-2">
+			<label class="form-label">Buscar Cliente:</label>
+			<div class="input-group">
+				<span class="input-group-text"><i class="bi bi-search"></i></span>
+				<input id="docClienteInput"
+					   data-rsc-name="persona"
+					   data-rsc-field="Documento"
+					   data-target-hidden="codClienteInput"
+					   type="text"
+					   class="form-control"
+					   placeholder="Documento..."
+					   asp-for="Documento">
+			</div>
+			<div id="docClienteErr" class="alert alert-danger msg-alert" role="alert">
+				Sin resultados.
+			</div>
+		</div>
+
+		<div class="col-md-10 container">
+			<label asp-for="CodCliente"
+					class="form-label">Nombre y Apellido:</label>
+			<input id="NombreInput"
+				   data-lov-target="persona"
+				   data-rsc-field="Nombre"
+				   type="text" class="form-control" 
+				   asp-for="NombreCliente"
+				   readonly />
+			<input id="codClienteInput"
+				   data-lov-target="persona"
+				   data-rsc-field="Codigo"
+					type="text"
+					asp-for="CodCliente" 
+					hidden
+					readonly/>
+			<span asp-validation-for="CodCliente"></span>
+		</div>
+	</div>
+</div>
+
+<div class="mb-3 col-md-12">
+	<label asp-for="Descripcion" class="form-label">Descripción:</label>
+	<input asp-for="Descripcion" class="form-control" />
+	<span asp-validation-for="Descripcion"></span>
+</div>

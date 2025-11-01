@@ -1,0 +1,53 @@
+﻿form {
+    min-height: 0;
+    height: 100%;
+}
+
+
+.table-container {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.table-wrapper {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto; /* Scroll en el wrapper */
+}
+
+.table-wrapper table {
+    width: 100%;
+}
+
+.table-wrapper thead {
+    flex-shrink: 0;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: #fff; /* ⭐ Importante: fondo sólido */
+}
+
+
+.table-footer-sticky {
+    flex-shrink: 0;
+    position: sticky;
+    bottom: 0;
+    z-index: 10;
+    /* Estilo visual */
+    background-color: #fff;
+    border-top: 2px solid #dee2e6;
+    padding: 0.5rem;
+    /* Centrado */
+    display: flex;
+    justify-content: center;
+    /* Sombra hacia arriba */
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Espaciado para que el botón no tape contenido */
+.table-wrapper tbody tr:last-child td {
+    padding-bottom: 1rem;
+}

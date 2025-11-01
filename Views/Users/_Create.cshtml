@@ -1,0 +1,13 @@
+﻿@model AgroLaboratorio.ViewModels.UsersVMS.RegistrationVM;
+
+<form asp-controller="Users" asp-action="Register" method="post" id="formNuevoUsuario">
+    <div class="mb-3">
+        <div asp-validation-summary="All" class="text-danger"></div>
+    </div>
+
+    @await Html.PartialAsync("_UsuarioForm", Model)
+
+    <div class="mb-3 d-grid">
+        <button type="submit" class="btn btn-success">Registrar</button>
+    </div>
+</form>

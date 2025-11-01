@@ -1,0 +1,70 @@
+﻿@model AgroLaboratorio.ViewModels.Personas.PersonaListVM
+
+<div class="index-page">
+	<div class="index-page__actions">
+		<button id="btnNewPersona" class="btn btn-success" type="button">Nueva Persona</button>
+	</div>
+	<div class="index-page__list">
+		<table id="tablaPersonas" class="table table-hover">
+			<thead>
+				<tr>
+					<th>Nombre y Apellido</th>
+					<th>Documento</th>
+					<th>Creado Por</th>
+					<th>Fecha de Creación</th>
+					<th>Acciones</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var persona in Model.Personas)
+				{
+					<tr>
+						<td>@persona.Nombre @persona.Apellido</td>
+						<td>@persona.Documento</td>
+						<td>@persona.CodUserAlta</td>
+						<td>@persona.FechaAlta</td>
+						<td>
+							<a asp-controller="Personas" asp-action="EditForm" asp-route-id="@persona.CodPersona" class="btn-edit">Editar</a>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<!-- MODAL PARA CREAR USUARIOS -->
+<div class="modal fade" id="modalCrearPersona" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+	 aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="staticBackdropLabel">Crear Persona</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				...
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- MODAL PARA EDITAR -->
+<div class="modal fade" id="modalEditPersona" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+	 aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="staticBackdropLabel">Editar Persona</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				...
+			</div>
+		</div>
+	</div>
+</div>
+
+@section Scripts{
+	<script src="~/js/Personas/index.js"></script>
+}

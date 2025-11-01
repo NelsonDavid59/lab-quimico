@@ -1,0 +1,16 @@
+﻿@using AgroLaboratorio.Utils;
+@model AgroLaboratorio.ViewModels.ElemQuimicos.ElemQuimicoVM;
+
+<form asp-controller="ElemQuimicos" asp-action="Create" method="post" id="formNuevoElemQuimico">
+	<div class="mb-3">
+		<label asp-for="CodElemento" class="form-label">Sigla:</label>
+		<input asp-for="CodElemento" class="form-control upper-case-input" />
+		<span asp-validation-for="CodElemento"></span>
+	</div>
+
+	@await Html.PartialAsync("_Form", Model)
+
+	<div class="mb-3 d-grid">
+		<button type="submit" class="btn btn-success">Guardar</button>
+	</div>
+</form>

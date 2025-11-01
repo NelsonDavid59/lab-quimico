@@ -1,0 +1,69 @@
+﻿@model AgroLaboratorio.ViewModels.ElemQuimicos.ElemQuimicoListVM;
+
+<div class="elem-quim-index">
+	<div class="elem-quim-index__actions">
+		<button id="btnNewElemQuimico" class="btn btn-success" type="button">Nuevo Elemento</button>
+	</div>
+	<div class="elem-quim-index__list">
+		<table id="tablaElemQuimicos" class="table table-hover">
+			<thead>
+				<tr>
+					<th>Descripcion</th>
+					<th>Creado Por</th>
+					<th>Fecha de Creación</th>
+					<th>Acciones</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var elemQuimico in Model.ElemQuimicos)
+				{
+					<tr>
+						<td>@elemQuimico.Descripcion</td>
+						<td>@elemQuimico.CodUserAlta</td>
+						<td>@elemQuimico.FechaAlta</td>
+						<td>
+							<a asp-controller="ElemQuimicos" asp-action="Show" asp-route-id="@elemQuimico.CodElemento">Ver</a>
+							<a asp-controller="ElemQuimicos" asp-action="EditForm" asp-route-id="@elemQuimico.CodElemento" class="btn-edit">Editar</a>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<!-- MODAL PARA CREAR USUARIOS -->
+<div class="modal fade" id="modalCrearElemQuimico" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+	 aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="staticBackdropLabel">Crear Elemento Químico</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				...
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- MODAL PARA EDITAR -->
+<div class="modal fade" id="modalEditarElemQuimico" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+	 aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="staticBackdropLabel">Editar Elemento Químico</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				...
+			</div>
+		</div>
+	</div>
+</div>
+
+@section Scripts {
+	<script src="~/js/ElemQuimicos/index.js" asp-append-version="true"></script>
+}

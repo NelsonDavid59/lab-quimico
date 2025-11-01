@@ -1,0 +1,143 @@
+@import 'blocks/_login-form.css';
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    position: relative;
+    height: 100%;
+    font-size: 14px;
+}
+
+body {
+    display: flex;
+    flex-direction: column; /* Apila header, main y footer verticalmente */
+    height: 100vh; /* Usa 100vh para garantizar la altura visible */
+    overflow: hidden;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    min-height: 0;
+    overflow: hidden;
+}
+
+/* 3. APLICACIÓN DE FLEXBOX PARA EL LAYOUT DE DOS COLUMNAS */
+.content-wrapper {
+    /* Muestra los hijos (aside y main) uno al lado del otro */
+    display: flex;
+    /* Opcional: Para ocupar el espacio vertical restante (si usaste 100vh en el body) */
+    flex-grow: 1;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.view-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    min-height: 0;
+}
+
+.navbar-brand {
+    display: block;
+    height: 5vh;
+}
+
+.navbar-brand img {
+    padding: 0;
+    height: 100%;
+    object-fit: cover;
+   
+}
+
+
+
+@media (min-width: 408px) {
+  html {
+    font-size: 8px;
+  }
+}
+
+@media (min-width: 1200px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+.upper-case-input {
+    text-transform: uppercase;
+}
+
+/* Paginación minimal */
+.minimal-pagination {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+}
+
+.minimal-pagination button {
+    border: none;
+    background: #f8f9fa;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.minimal-pagination button:hover:not(:disabled) {
+    background-color: #e9ecef;
+}
+
+.minimal-pagination button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+
+.searchable-th:hover {
+    background-color: ActiveBorder;
+    cursor: pointer;
+}
+
+.msg-alert {
+    font-size: 0.8rem;
+    padding: 3px;
+    margin: 6px 0 0 0;
+    font-weight: bold;
+    visibility: hidden;
+    opacity: 0;
+    max-height: 0;
+    text-align: center;
+    transition: opacity 0.45s,
+                visibility 0.45s,
+                max-height 0.45s;
+}
+
+.msg-alert-showing {
+    opacity: 1;
+    max-height: 100%;
+    visibility: visible;
+}
+
+@starting-style {
+    .msg-alert-showing {
+        opacity: 0;
+    }
+}
+
+tr .table-numeration {
+    background: none !important;
+    border: none !important;
+}
+
+
