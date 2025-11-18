@@ -3,6 +3,7 @@
     public enum ErrorType
     {
         NotFound,
-        Unauthorized
+        Unauthorized,
+        Internal
     }
 }
