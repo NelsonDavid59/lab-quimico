@@ -1,60 +1,75 @@
 ﻿import { InputMask } from '../../Utils/InputMask.js';
+import { formHandlers } from '../Handlers/form-handlers.js';
+import { BaseFormService } from '../Services/BaseFormService.js';
 
-class BaseFormInit {
+/**
+ * @typedef {object} DOMElements
+ * @property {HTMLFormElement} form Elemento form del Solicitud de Análisis
+ * @property {HTMLInputElement} buscadorClienteInp Elemento input Buscador de clientes
+ * @property {HTMLTableElement} tableElem Elemento table del formulario (Detalles de Análisis)
+ * @property {HTMLTemplateElement} rowTemplateElem Elemento template - Fila para agregarse 
+ */
 
+
+/**
+ * Initializer base para los formularios de Solicitudes de Análisis
+ * @class
+ */
+export class BaseFormInit {
+
+    /**
+     * @constructor
+     * @param {form} formElem - Elemento DOM del Formulario
+     */
     constructor(formElem) {
+        /**
+         * @type {DOMElements}
+         */
         this.elements = {
-            form = formElem,
-            buscadorClienteInp = formElem.querySelector('[id="docClientInput"]'),
-            tablaDets = formElem.querySelector('[id="tablaDetalles"]'),
-            templateFilaDet = document.getElementById('templateFilaDet')
+            form: formElem,
+            buscadorClienteInp: formElem.querySelector('[id="docClienteInput"]'),
+            tableElem: formElem.querySelector('[id="tablaDetalles"]'),
+            rowTemplateElem: document.getElementById('templateFilaDet')
         };
 
-        
+        /** @type {BaseFormService} */
+        this.service = new BaseFormService();
+        this.handlers = this.#initHandlers();
     }
 
-    /*
- *	MÁSCARAS DE CARACTÉRES PARA LOS INPUTS DE LA TABLA DE DETALLES 
- */
-    applyTableInputMasks(tr) {
-        tr.querySelectorAll('input.alphabet-upper')
-            .forEach(x => InputMask.alphabetUpperMask(x)); //Máscara solo letras
-
-        tr.querySelectorAll('input.garantia-val')
-            .forEach(x => InputMask.decimalNumberMask(x, 7, 3));
-
-        tr.querySelectorAll('input.solubl-val')
-            .forEach(x => InputMask.onlyNumberMask(x, 3));
+    #initHandlers() {
+        return formHandlers(this.service, this.elements);
+    }
+    
+    /**
+     * Inicializa las máscaras en las filas de la tabla
+     */
+    initMaskToTableRows() {
+        const tbody = this.elements.tableElem.querySelector('tbody');
+        this.service.applyTableBodyInputMasks(tbody);
     }
 
-    dropTableInputMasks(tr) {
-        tr.querySelectorAll('input.alphabet-upper')
-            .forEach(InputMask.removeIMask);
-
-        tr.querySelectorAll('input.garantia-val')
-            .forEach(InputMask.removeIMask);
-
-        tr.querySelectorAll('input.solubl-val')
-            .forEach(InputMask.removeIMask);
-    }
-
+    /**
+     * Inicializa los manejadores de eventos del formulario
+     */
     initEventListeners() {
+        
+        /* BUSCADOR DE CLIENTES */
+        this.elements.buscadorClienteInp
+            .addEventListener('keydown', this.handlers.handleInputKeydown);
+
+        this.elements.buscadorClienteInp
+            .addEventListener('input', this.handlers.handleInput);
+
+        /* TABLA DE DETALLES DEL ANÁLISIS */
+        this.elements.tableElem
+            .addEventListener('keydown', this.handlers.handleInputKeydown);
+
+        this.elements.tableElem
+            .addEventListener('input', this.handlers.handleInput);
+
         document.getElementById('btnAddDetail')
-            .addEventListener('click', (e) => {
-                e.preventDefault();
-                addNewDetRow();
-            });
-
-        buscadorCliente.addEventListener('keydown', e => handleInputKeydown(e,
-            (error) => {
-                if (error instanceof RscNotFoundErr) {
-                    inputSearchErrorHandler(error);
-                }
-                else {
-                    throw error;
-                }
-            }));
-
-        buscadorCliente.addEventListener('input', e => clearInputLovTargets(e.target));
+            .addEventListener('click', this.handlers.handleAddRowClick);
     }
+
 }

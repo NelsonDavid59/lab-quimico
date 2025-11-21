@@ -3,8 +3,9 @@
 
 <div class="view-wrapper container">
 	<h5>Edición de Solicitud de Análisis</h5>
-	<form asp-controller="SolsAnalisis" asp-action="Edit" method="post"
-	class="d-flex flex-column">
+	<form id="formEditSolAnalisis"
+		asp-controller="SolsAnalisis" asp-action="Edit" method="put"
+		class="d-flex flex-column">
 		<hr />
 
 		<input asp-for="CodAnalisis" type="hidden" />
@@ -52,6 +53,8 @@
 
 @section Scripts {
 	<script src="~/js/SolsAnalisis/create.js" type="module"></script>
+
+	<script src="~/js/SolsAnalisis/form.js" type="modeule"></script>
 
 	<script type="module">
 		import { setDetRowIndex } from '/js/SolsAnalisis/create.js';
