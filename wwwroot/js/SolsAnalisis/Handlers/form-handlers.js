@@ -1,10 +1,12 @@
 ﻿
 import { moveFocusToNext } from '../../helpers/form.helpers.js';
 
+/** @typedef { import("../types/form.types.js").DOMElements } */
+
 /**
  * Factory que crea los handlers para el formulario de Solicitud de Análisis
- * @param {BaseFormService} service - Service del formulario
- * @param 
+ * @param {import("../Services/BaseFormService.js").BaseFormService} service - Service del formulario
+ * @param {DOMElements} formElems
  */
 export const formHandlers = (service, formElems) => {
 	const handleInputKeydown = async (e) => {

@@ -1,4 +1,7 @@
 ﻿import { LovUI } from '../../Lov/LovUI.js';
+import { InputMask } from '../../Utils/InputMask.js';
+
+/** @typedef {import("../types/form.types.js").DOMElements} */
 
 /**
  * Clase encargada de la lógica relacionada a la interacción UI 
@@ -40,8 +43,7 @@ export class BaseFormService {
 	}
 	/**
 	 * Agrega una fila nueva a la tabla especificada
-	 * @param {any} rowTemplateElem - Template que debe representar la nueva fila.
-	 * @param {any} tableElem -  Elemento <table> que debe agregar el nuevo <tr>
+	 * @param {DOMElements}
 	 * @returns
 	 */
 	addNewDetRow = ({ rowTemplateElem, tableElem }) => {
@@ -84,26 +86,26 @@ export class BaseFormService {
 	showLovFromTable = async (lovParams) => {
 		const tr = lovParams.nextFocusScope;
 		//Agregamos la lista de targets al input
-		lovParams.targetsFunc = () => lov.getLovInputTargets(lovParams.input, tr);
+		lovParams.targetsFunc = () => this.lov.getLovInputTargets(lovParams.input, tr);
 
-		await lov.executeLovForInput(lovParams);
+		await this.lov.executeLovForInput(lovParams);
 	};
 
 	showLovFromInput = async (lovParams) => {
 		//Agregamos la lista de targets al input
-		lovParams.targetsFunc = () => lov.getLovInputTargets(lovParams.input);
+		lovParams.targetsFunc = () => this.lov.getLovInputTargets(lovParams.input);
 
-		await lov.executeLovForInput(lovParams);
+		await this.lov.executeLovForInput(lovParams);
 	};
 
 	removeTableRow = (tr) => {
 		//Eliminamos las máscaras innecesarias
-		dropTableInputMasks(tr);
+		this.#dropTableRowInputMasks(tr);
 
 		const tbody = tr.closest('tbody');
 
 		//Eliminamos la fila del DOM
-		removeDetRow(tr);
+		this.removeDetRow(tr);
 
 		//Reasignamos el orden a los detalles
 

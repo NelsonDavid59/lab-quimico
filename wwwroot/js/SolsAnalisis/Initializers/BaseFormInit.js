@@ -1,15 +1,8 @@
-﻿import { InputMask } from '../../Utils/InputMask.js';
+﻿
 import { formHandlers } from '../Handlers/form-handlers.js';
 import { BaseFormService } from '../Services/BaseFormService.js';
 
-/**
- * @typedef {object} DOMElements
- * @property {HTMLFormElement} form Elemento form del Solicitud de Análisis
- * @property {HTMLInputElement} buscadorClienteInp Elemento input Buscador de clientes
- * @property {HTMLTableElement} tableElem Elemento table del formulario (Detalles de Análisis)
- * @property {HTMLTemplateElement} rowTemplateElem Elemento template - Fila para agregarse 
- */
-
+/** @typedef { import("../types/form.types.js").DOMElements } */
 
 /**
  * Initializer base para los formularios de Solicitudes de Análisis
@@ -67,6 +60,9 @@ export class BaseFormInit {
 
         this.elements.tableElem
             .addEventListener('input', this.handlers.handleInput);
+
+        this.elements.tableElem
+            .addEventListener('click', this.handlers.handleTableRowClick);
 
         document.getElementById('btnAddDetail')
             .addEventListener('click', this.handlers.handleAddRowClick);
