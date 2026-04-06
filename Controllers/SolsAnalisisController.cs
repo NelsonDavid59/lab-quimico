@@ -79,7 +79,7 @@ namespace AgroLaboratorio.Controllers
             return View(vm);
         }
 
-        [HttpPost]
+        [HttpPut]
         [Authorize(Roles = Roles.Admin)]
         [ServiceFilter(typeof(ValidateSolAnalisisFilter))]
         public async Task<IActionResult> Edit(SolAnalisisVM vm)

@@ -5,6 +5,8 @@ using AgroLaboratorio.Repository;
 using AgroLaboratorio.Repository.SolsAnalisis;
 using AgroLaboratorio.Utils;
 using AgroLaboratorio.ViewModels.SolsAnalisis;
+using AgroLaboratorio.Common.Results;
+using AgroLaboratorio.Data;
 
 namespace AgroLaboratorio.Services.SolsAnalisis
 {
@@ -55,6 +57,99 @@ namespace AgroLaboratorio.Services.SolsAnalisis
             await _solAnalisisRep.UpdateAsync(model);
 
             await _unitOfWork.SaveChangesAsync();
+        }
+
+        public async Task<Result> UpdSolicitudAsync(SolAnalisisVM vm)
+        {
+            try
+            {
+                var user = _contextAccessor.HttpContext?.User ?? 
+                    throw new InvalidOperationException("Usuario no autenticado. Endpoint debe tener [Authorize]");
+                var codUser = user?.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                var incomingModel = ParseVMToModel(vm);
+
+                incomingModel.FechaModif = AppTime.NowLocal();
+                incomingModel.CodUserModif = codUser;
+
+                var dbModel = await _solAnalisisRep.FindByCodWithDetails(incomingModel.CodAnalisis);
+
+                //Verificar si existe el modelo en DB
+                if (dbModel is null) return Result.Failure(Errors.RscNotFound);
+
+                //Seteamos los valores para la parte Master
+                SetMasterEntryValues(dbModel, incomingModel);
+
+                SetDetailsEntryValues(dbModel, incomingModel);
+
+                return Result.Success();
+            }
+            catch(Exception ex)
+            {
+                Console.Write(ex.StackTrace);
+                return Result.Failure(Errors.InternalServerError);
+            }
+        }
+
+        private void SetMasterEntryValues(SolAnalisisCab dbModel, SolAnalisisCab incomingModel)
+        {
+            //Obtenemos el acceso al change tracking del objeto
+            var entry = _solAnalisisRep.Set.Entry(dbModel);
+
+            //Reemplazamos los valores actuales por los nuevos
+            entry.CurrentValues.SetValues(incomingModel);
+
+            //Marcamos los valores que no requieren actualizarse para que EF Core no los modifique
+            entry.Member(nameof(dbModel.FechaAlta)).IsModified = false;
+            entry.Member(nameof(dbModel.CodUserAlta)).IsModified = false;
+            entry.Member(nameof(dbModel.Fecha)).IsModified = false;
+
+            //Aseguramos de que el estado de actualizacion sea false para los detalles
+            entry.Collection(m => m.SolAnalisisDets).IsModified = false;
+        }
+
+        private void SetDetailsEntryValues(SolAnalisisCab dbModel, SolAnalisisCab incomingModel)
+        {
+            var dbDets = dbModel.SolAnalisisDets.ToList();
+            var incomingDets = incomingModel.SolAnalisisDets.ToList();
+
+            var dbSet = _solAnalisisRep.DetsSet;
+
+            //Calculamos el número de línea
+            int currentNroLinea = dbDets.Count != 0 ? dbDets.Max(d => d.NroLinea) : 1;
+
+            foreach(var incomingDet in incomingDets)
+            {
+                var existing = dbDets.FirstOrDefault(m => m.NroLinea == incomingDet.NroLinea
+                                                            && m.CodElemento == incomingDet.CodElemento);
+                if (existing != null)
+                {
+                    //Asignamos la PK existente al objeto entrante
+                    incomingDet.NroLinea = existing.NroLinea;
+                    incomingDet.CodAnalisis = existing.CodAnalisis;
+
+                    dbSet.Entry(existing).CurrentValues.SetValues(incomingDet);
+
+                    continue; //Seguimos el bucle
+                }
+                
+                incomingDet.NroLinea = ++currentNroLinea; //Sumamos 1 antes de asignar
+                incomingDet.CodAnalisis = dbModel.CodAnalisis;
+
+                dbSet.Add(incomingDet); //Se agrega un nuevo detalle
+            }
+
+            //Eliminamos los que no existan
+            var incomingDetIds = incomingDets
+                .Where(x => x.NroLinea != 0) //Solo los que tengan numero de linea se consideran existentes
+                .Select(x => (x.NroLinea, x.CodElemento));
+
+            //Lo que exista en la DB y no exista en la lista entrante debe ser eliminado
+            var detsToRemove = dbDets
+                .Where(d => !incomingDetIds.Contains((d.NroLinea, d.CodElemento)))
+                .ToList();
+
+            dbSet.RemoveRange(detsToRemove);
         }
 
         public async Task<SolAnalisisListVM> GetAllSols()

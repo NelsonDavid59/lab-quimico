@@ -14,6 +14,8 @@ public class SolAnalisisRep : BaseRepository<SolAnalisisCab, int>, ISolAnalisisR
     {
     }
 
+    public DbSet<SolAnalisisDet> DetsSet => (Context as AppDbContext).SolAnalisisDets;
+
     //Sobreescribimos el Update del padre por si es llamado
     public override void Update(SolAnalisisCab model)
     {
@@ -61,12 +63,12 @@ public class SolAnalisisRep : BaseRepository<SolAnalisisCab, int>, ISolAnalisisR
         entry.Collection(m => m.SolAnalisisDets).IsModified = false;
     }
 
+    
+
     private async Task UpdateDetsAsync(int codAnalisis, List<SolAnalisisDet> incomingDets)
     {
-        var dbSet = Context.SolAnalisisDets;
-
         //Traemos a memoria los detalles existentes para la cabecera
-        var existingDets = await dbSet.Where(d => d.CodAnalisis == codAnalisis).ToListAsync();
+        var existingDets = await DetsSet.Where(d => d.CodAnalisis == codAnalisis).ToListAsync();
 
         //Calculamos el número de línea
         int currentNroLinea = existingDets.Count != 0 ? existingDets.Max(d => d.NroLinea) : 1;
@@ -85,7 +87,7 @@ public class SolAnalisisRep : BaseRepository<SolAnalisisCab, int>, ISolAnalisisR
                 modified.NroLinea = existingDet.NroLinea;
                 modified.CodAnalisis = existingDet.CodAnalisis;
 
-                dbSet.Entry(existingDet).CurrentValues.SetValues(modified);
+                DetsSet.Entry(existingDet).CurrentValues.SetValues(modified);
             }
             else
             {
@@ -93,7 +95,7 @@ public class SolAnalisisRep : BaseRepository<SolAnalisisCab, int>, ISolAnalisisR
                 modified.NroLinea = ++currentNroLinea; //Sumamos 1 antes de asignar
                 modified.CodAnalisis = codAnalisis;
 
-                dbSet.Add(modified);
+                DetsSet.Add(modified);
             }
         }
 
@@ -107,6 +109,6 @@ public class SolAnalisisRep : BaseRepository<SolAnalisisCab, int>, ISolAnalisisR
             .Where(d => !incomingDetIds.Contains((d.NroLinea, d.CodElemento)))
             .ToList();
 
-        dbSet.RemoveRange(detsToRemove);
+        DetsSet.RemoveRange(detsToRemove);
     }
 }

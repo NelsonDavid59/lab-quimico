@@ -52,16 +52,13 @@
 }
 
 @section Scripts {
-	<script src="~/js/SolsAnalisis/create.js" type="module"></script>
-
-	<script src="~/js/SolsAnalisis/form.js" type="modeule"></script>
-
-	<script type="module">
-		import { setDetRowIndex } from '/js/SolsAnalisis/create.js';
-
-		setDetRowIndex( @(Model.Detalles?.Count ?? 0) );
+	<script>
+		window.formConfig = @Html.Raw(Json.Serialize(new { initialTableIndex =  Model.Detalles?.Count ?? 0 }));
 	</script>
 
+	<script src="~/js/SolsAnalisis/edit.js" type="module" defer></script>
+
+	<script src="~/js/SolsAnalisis/form.js" type="modeule" defer></script>
 
 	@if (ViewBag.DetailsErrorScript != null)
 	{

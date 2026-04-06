@@ -6,8 +6,8 @@ namespace AgroLaboratorio.Repository.Base
 {
     public class BaseRepository<TModel, PKType> : IRepository<TModel, PKType> where TModel : class
     {
-        private AppDbContext _context;
-        private DbSet<TModel> _set;
+        private readonly DbContext _context;
+        private readonly DbSet<TModel> _set;
 
         public BaseRepository(AppDbContext context)
         {
@@ -37,6 +37,6 @@ namespace AgroLaboratorio.Repository.Base
 
         public DbSet<TModel> Set => _set;
 
-        public AppDbContext Context => _context;
+        public DbContext Context => _context;
     }
 }

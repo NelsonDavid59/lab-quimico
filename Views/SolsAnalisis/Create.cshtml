@@ -48,13 +48,6 @@
 @section Scripts {
 	<script src="~/js/SolsAnalisis/create.js" type="module"></script>
 
-	<script type="module">
-		import { setDetRowIndex } from '/js/SolsAnalisis/create.js';
-
-		setDetRowIndex( @(Model.Detalles?.Count ?? 0) );
-	</script>
-
-
 	@if (ViewBag.DetailsErrorScript != null)
 	{
 		<script type="module">

@@ -93,13 +93,20 @@ export const formHandlers = (service, formElems) => {
 		service.addNewDetRow(formElems);
 	};
 
+	const handleSubmit = (e) => {
+		e.preventDefault();
+
+		
+	}
+
 	return {
 		handleAddRowClick,
 		handleTableRowClick,
 		handleTableInputKeydown,
 		handleInput,
 		handleAddRowClick,
-		handleInputKeydown
+		handleInputKeydown,
+		handleSubmit
 	};
 }
 

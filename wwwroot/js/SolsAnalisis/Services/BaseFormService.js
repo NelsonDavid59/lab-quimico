@@ -13,9 +13,9 @@ export class BaseFormService {
 	 * Crea una instancia del service
 	 * @constructor
 	 */
-    constructor() {
+	constructor(formConfig = {}) {
 		this.lov = new LovUI();
-		this.indexDet = 0;
+		this.indexDet = formConfig.initialTableIndex ?? 0;
 		this.inputAlertClass = 'msg-alert-showing';
 		this.hideInputAlertTimeout;
     }

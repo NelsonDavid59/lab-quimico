@@ -14,7 +14,7 @@ export class BaseFormInit {
      * @constructor
      * @param {form} formElem - Elemento DOM del Formulario
      */
-    constructor(formElem) {
+    constructor(formElem, formConfig = {}) {
         /**
          * @type {DOMElements}
          */
@@ -26,7 +26,7 @@ export class BaseFormInit {
         };
 
         /** @type {BaseFormService} */
-        this.service = new BaseFormService();
+        this.service = new BaseFormService(formConfig);
         this.handlers = this.#initHandlers();
     }
 
